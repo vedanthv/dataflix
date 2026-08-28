@@ -1,0 +1,205 @@
+{
+  "version": 2,
+  "config": {
+    "sample_questions": [
+      {
+        "id": "1a000000000000000000000000000001",
+        "question": [
+          "Which genres have the highest average watch hours by region?"
+        ]
+      },
+      {
+        "id": "1a000000000000000000000000000002",
+        "question": [
+          "Which titles star a given actor?"
+        ]
+      },
+      {
+        "id": "1a000000000000000000000000000003",
+        "question": [
+          "What is the completion rate trend for a title in a region over the last 10 weeks?"
+        ]
+      },
+      {
+        "id": "1a000000000000000000000000000004",
+        "question": [
+          "Which titles have the highest day-1 retention in India?"
+        ]
+      },
+      {
+        "id": "1a000000000000000000000000000005",
+        "question": [
+          "How is Spider-Man: Brand New Day performing in the US?"
+        ]
+      },
+      {
+        "id": "1a000000000000000000000000000006",
+        "question": [
+          "Which Bollywood titles are performing best by watch hours?"
+        ]
+      },
+      {
+        "id": "1a000000000000000000000000000007",
+        "question": [
+          "What is Dhurandhar's day-1 retention in India?"
+        ]
+      },
+      {
+        "id": "1a000000000000000000000000000008",
+        "question": [
+          "How does completion rate compare between Hollywood and Bollywood titles?"
+        ]
+      },
+      {
+        "id": "1a000000000000000000000000000009",
+        "question": [
+          "Which region has the highest total watch hours overall?"
+        ]
+      }
+    ]
+  },
+  "data_sources": {
+    "tables": [
+      {
+        "identifier": "dataflix.core.dim_actor"
+      },
+      {
+        "identifier": "dataflix.core.dim_region"
+      },
+      {
+        "identifier": "dataflix.core.dim_title"
+      },
+      {
+        "identifier": "dataflix.core.title_cast"
+      },
+      {
+        "identifier": "dataflix.engagement.fact_engagement"
+      }
+    ]
+  },
+  "instructions": {
+    "example_question_sqls": [
+      {
+        "id": "2a000000000000000000000000000001",
+        "question": [
+          "What is the genre and industry of Spider-Man: Brand New Day?"
+        ],
+        "sql": [
+          "SELECT title_name, genre, industry, content_type\n",
+          "FROM dataflix.core.dim_title\n",
+          "WHERE title_name ILIKE '%Spider-Man: Brand New Day%'"
+        ]
+      },
+      {
+        "id": "2a000000000000000000000000000002",
+        "question": [
+          "Which titles have a completion rate above 70% in the US?"
+        ],
+        "sql": [
+          "SELECT DISTINCT t.title_name, fe.completion_rate\n",
+          "FROM dataflix.engagement.fact_engagement fe\n",
+          "JOIN dataflix.core.dim_title t ON fe.title_id = t.title_id\n",
+          "WHERE fe.region_code = 'US' AND fe.completion_rate > 0.70\n",
+          "ORDER BY fe.completion_rate DESC"
+        ]
+      },
+      {
+        "id": "2a000000000000000000000000000003",
+        "question": [
+          "What is the total watch hours for Dhurandhar in India?"
+        ],
+        "sql": [
+          "SELECT t.title_name, SUM(fe.watch_hours) AS total_watch_hours\n",
+          "FROM dataflix.engagement.fact_engagement fe\n",
+          "JOIN dataflix.core.dim_title t ON fe.title_id = t.title_id\n",
+          "WHERE t.title_name ILIKE '%Dhurandhar%' AND fe.region_code = 'IN'\n",
+          "GROUP BY t.title_name"
+        ]
+      },
+      {
+        "id": "2a000000000000000000000000000004",
+        "question": [
+          "Which titles star a given actor?"
+        ],
+        "sql": [
+          "SELECT t.title_name, t.genre, t.industry, a.actor_name, tc.billing_order\n",
+          "FROM dataflix.core.title_cast tc\n",
+          "JOIN dataflix.core.dim_title t ON tc.title_id = t.title_id\n",
+          "JOIN dataflix.core.dim_actor a ON tc.actor_id = a.actor_id\n",
+          "WHERE a.actor_name ILIKE '%Tom Holland%'\n",
+          "ORDER BY tc.billing_order"
+        ]
+      }
+    ],
+    "text_instructions": [
+      {
+        "id": "3a000000000000000000000000000001",
+        "content": [
+          "This space covers title engagement (watch_hours, completion_rate, day_1_retention) and the catalog/cast dimensions.\n",
+          "fact_engagement grain is (title_id, region_code, snapshot_week) with 10 weekly snapshots per title/region combo -- always aggregate (SUM watch_hours, AVG completion_rate) rather than returning raw weekly rows unless the user explicitly asks for a trend over time.\n",
+          "region_code values are exactly: US, IN, BR, DE, JP, UK (join dim_region for the human-readable region_name).\n",
+          "title_id format is '{movie|tv}_{tmdb_id}', e.g. 'movie_969681' -- always join to dim_title to resolve title_name/genre/industry rather than showing raw title_id to the user.\n",
+          "industry is either 'Hollywood' or 'Bollywood'; content_type is either 'movie' or 'tv'.\n",
+          "For 'which titles star X' questions, join title_cast -> dim_actor on actor_name and title_cast -> dim_title, ordering by billing_order ascending (0 = top-billed).\n",
+          "TITLE/ACTOR MATCHING RULE: always match title_name or actor_name with ILIKE '%<name>%' (case-insensitive, partial), never exact '='. The user's phrasing may have typos or a partial name -- if a fuzzy match returns more than one match, show all of them rather than guessing. If ILIKE finds NO match at all, the name may be misspelled (not just partial) -- fall back to levenshtein(lower(title_name), lower('<name_as_given>')) ORDER BY that value ASC LIMIT 3, and treat a result with distance <= 5 as the likely intended title (e.g. levenshtein('durandhar the revenge', 'dhurandhar: the revenge') = 1). State in your answer that you matched a likely misspelling, e.g. \"(matched 'Durandhar the Revenge' to 'Dhurandhar: The Revenge')\", rather than silently substituting it.\n",
+          "watch_hours and completion_rate/day_1_retention are entirely synthetic demo data -- do not claim they reflect real-world streaming performance.\n",
+          "Two titles have hand-tuned strong performance for demo purposes: 'Spider-Man: Brand New Day' (movie_969681) is strongest in region US, and 'Dhurandhar' (movie_1291608) is strongest in region IN.\n",
+          "completion_rate and day_1_retention are stored as FRACTIONS between 0 and 1 (e.g. 0.5674), never as 0-100 percentages -- always multiply by 100 and present as a percentage with a % sign in the answer (e.g. '56.74%'), never show the raw decimal.\n",
+          "genre is a single categorical value per title (not multi-valued/comma-separated), so GROUP BY genre directly without needing to split or explode it.\n",
+          "For 'highest'/'top' ranking questions that don't specify how many results, default to ORDER BY <metric> DESC LIMIT 5 unless the user's phrasing implies a single answer (e.g. 'which title has the highest...')."
+        ]
+      }
+    ]
+  },
+  "benchmarks": {
+    "questions": [
+      {
+        "id": "4a000000000000000000000000000001",
+        "question": ["What is Dhurandhar's day-1 retention in India?"],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT t.title_name, ROUND(AVG(fe.day_1_retention) * 100, 2) AS avg_day1_retention_pct\n",
+              "FROM dataflix.engagement.fact_engagement fe\n",
+              "JOIN dataflix.core.dim_title t ON fe.title_id = t.title_id\n",
+              "WHERE t.title_name ILIKE '%Dhurandhar%' AND fe.region_code = 'IN'\n",
+              "GROUP BY t.title_name"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "4a000000000000000000000000000002",
+        "question": ["Which titles star Tom Holland?"],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT DISTINCT t.title_name\n",
+              "FROM dataflix.core.title_cast tc\n",
+              "JOIN dataflix.core.dim_actor a ON tc.actor_id = a.actor_id\n",
+              "JOIN dataflix.core.dim_title t ON tc.title_id = t.title_id\n",
+              "WHERE a.actor_name ILIKE '%Tom Holland%'"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "4a000000000000000000000000000003",
+        "question": ["What is Spider-Man: Brand New Day's total watch hours in the US?"],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT ROUND(SUM(fe.watch_hours), 2) AS total_watch_hours\n",
+              "FROM dataflix.engagement.fact_engagement fe\n",
+              "JOIN dataflix.core.dim_title t ON fe.title_id = t.title_id\n",
+              "WHERE t.title_name = 'Spider-Man: Brand New Day' AND fe.region_code = 'US'"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

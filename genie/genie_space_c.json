@@ -1,0 +1,177 @@
+{
+  "version": 2,
+  "config": {
+    "sample_questions": [
+      {
+        "id": "1c000000000000000000000000000001",
+        "question": [
+          "What is the visual style and emotional tone of Spider-Man: Brand New Day's poster?"
+        ]
+      },
+      {
+        "id": "1c000000000000000000000000000002",
+        "question": [
+          "Which titles have a dark, tense poster tone?"
+        ]
+      },
+      {
+        "id": "1c000000000000000000000000000003",
+        "question": [
+          "What is Dhurandhar's poster composition style?"
+        ]
+      },
+      {
+        "id": "1c000000000000000000000000000004",
+        "question": [
+          "Which titles have vibrant, uplifting posters?"
+        ]
+      },
+      {
+        "id": "1c000000000000000000000000000005",
+        "question": [
+          "List all titles with character-focused poster composition"
+        ]
+      },
+      {
+        "id": "1c000000000000000000000000000006",
+        "question": [
+          "Show me the poster for Dhurandhar"
+        ]
+      },
+      {
+        "id": "1c000000000000000000000000000007",
+        "question": [
+          "Which titles have a warm dominant color tone?"
+        ]
+      },
+      {
+        "id": "1c000000000000000000000000000008",
+        "question": [
+          "How many titles have been tagged with poster signals so far?"
+        ]
+      },
+      {
+        "id": "1c000000000000000000000000000009",
+        "question": [
+          "Which titles have minimalist poster composition?"
+        ]
+      }
+    ]
+  },
+  "data_sources": {
+    "tables": [
+      {
+        "identifier": "dataflix.content_signals.poster_signals"
+      },
+      {
+        "identifier": "dataflix.core.dim_title"
+      }
+    ]
+  },
+  "instructions": {
+    "example_question_sqls": [
+      {
+        "id": "2c000000000000000000000000000001",
+        "question": [
+          "What is the visual style and emotional tone of a title's poster?"
+        ],
+        "sql": [
+          "SELECT t.title_name, p.dominant_color_tone, p.composition_style, p.emotional_tone\n",
+          "FROM dataflix.content_signals.poster_signals p\n",
+          "JOIN dataflix.core.dim_title t ON p.title_id = t.title_id\n",
+          "WHERE t.title_name ILIKE '%Spider-Man: Brand New Day%'"
+        ]
+      },
+      {
+        "id": "2c000000000000000000000000000002",
+        "question": [
+          "Which titles have a given poster tone or style?"
+        ],
+        "sql": [
+          "SELECT t.title_name, p.dominant_color_tone, p.composition_style, p.emotional_tone\n",
+          "FROM dataflix.content_signals.poster_signals p\n",
+          "JOIN dataflix.core.dim_title t ON p.title_id = t.title_id\n",
+          "WHERE p.emotional_tone = 'tense'"
+        ]
+      },
+      {
+        "id": "2c000000000000000000000000000003",
+        "question": [
+          "Show me the poster for a title"
+        ],
+        "sql": [
+          "SELECT t.title_name, p.poster_url\n",
+          "FROM dataflix.content_signals.poster_signals p\n",
+          "JOIN dataflix.core.dim_title t ON p.title_id = t.title_id\n",
+          "WHERE t.title_name ILIKE '%Dhurandhar%'"
+        ]
+      }
+    ],
+    "text_instructions": [
+      {
+        "id": "3c000000000000000000000000000001",
+        "content": [
+          "This space covers real poster-art tagging: dominant_color_tone, composition_style, and emotional_tone. These tags come from a real vision-FM model (databricks-llama-4-maverick) analyzing the actual real TMDB poster image for each title -- not fabricated or templated, though each field is constrained to a fixed controlled vocabulary rather than free text.\n",
+          "dominant_color_tone is one of: warm, cool, neutral, high-contrast, muted, dark, vibrant.\n",
+          "composition_style is one of: character-focused, ensemble, action-collage, minimalist, text-heavy, landscape/establishing.\n",
+          "emotional_tone is one of: tense, uplifting, dark, comedic, dramatic, mysterious, romantic.\n",
+          "Coverage is intentionally PARTIAL -- only a 20-title subset (the top 15 Hollywood + top 5 Bollywood titles by real TMDB vote_count) has been tagged, not the full 130-title catalog. If a title isn't in poster_signals, say tagging data isn't available for it rather than implying no poster exists.\n",
+          "There is no dialogue-pacing or subtitle data in this space or anywhere in Dataflix -- if asked about pacing or dialogue density, say that signal isn't available. Thumbnail-VARIANT-performance data DOES exist (see the 'marketing' Genie Space) -- don't say it's unavailable.\n",
+          "TITLE MATCHING RULE: always match title_name with ILIKE '%<name>%' (case-insensitive, partial), never exact '='. The user's phrasing may have typos or be a partial name -- if a fuzzy match returns more than one title, show all matches rather than guessing. If ILIKE finds NO match at all, the name may be misspelled (not just partial) -- fall back to levenshtein(lower(title_name), lower('<name_as_given>')) ORDER BY that value ASC LIMIT 3, and treat a result with distance <= 5 as the likely intended title (e.g. levenshtein('durandhar the revenge', 'dhurandhar: the revenge') = 1). State in your answer that you matched a likely misspelling, e.g. \"(matched 'Durandhar the Revenge' to 'Dhurandhar: The Revenge')\", rather than silently substituting it.\n",
+          "title_id format is '{movie|tv}_{tmdb_id}' -- always join to dim_title to resolve title_name rather than showing raw title_id.\n",
+          "Both hero titles are tagged: 'Spider-Man: Brand New Day' (movie_969681) and 'Dhurandhar' (movie_1291608).\n",
+          "poster_url is a real, live, publicly-accessible TMDB image CDN URL for the title's actual UNMODIFIED poster (not a placeholder, and not one of the derived thumbnail variants from the 'marketing' space -- always label it 'Original' so it's never confused with a variant). ANY question that relates to a title's poster, thumbnail, or visual/artwork appearance in any way (not just an explicit 'show me') -- including questions about dominant_color_tone, composition_style, or emotional_tone -- MUST include the poster_url value verbatim as part of the answer, formatted as: '**Original poster:**\\n\\n![<title_name> - Original](<poster_url>)'. Do not just describe the URL in words or omit it -- output the actual markdown image tag so it can render, with the blank-line spacing shown.\n",
+          "Formatting rule for the image markdown: it MUST be its own paragraph, with a full BLANK LINE (two newlines) before it and, if any text follows, a full blank line after it too. NEVER put the image tag on the line immediately after a label or heading with only a single newline -- a single newline is not a paragraph break and will visually merge the label and image together. Correct example:\n\n**Poster:**\n\n![Dhurandhar poster](https://image.tmdb.org/t/p/w500/xyz.jpg)\n\nIncorrect (do not do this): '**Poster:**\\n![Dhurandhar poster](url)' with only one newline.\n",
+          "VOCABULARY MAPPING RULE: dominant_color_tone, composition_style, and emotional_tone are each constrained to the fixed vocabularies listed above -- a user will often describe a poster using a word NOT in that vocabulary (e.g. 'gritty', 'bright', 'scary', 'epic'). Never filter directly on the user's literal word if it isn't one of the allowed values -- map it to the nearest semantic match instead (e.g. 'gritty'->'dark', 'bright'->'vibrant', 'scary'->'tense', 'epic'->'ensemble' or 'dramatic' depending on context) and state in the answer which controlled value you used, e.g. \"(interpreting 'gritty' as the 'dark' tone)\"."
+        ]
+      }
+    ]
+  },
+  "benchmarks": {
+    "questions": [
+      {
+        "id": "4c000000000000000000000000000001",
+        "question": ["How many titles have poster signal tagging?"],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT COUNT(*) AS tagged_titles FROM dataflix.content_signals.poster_signals"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "4c000000000000000000000000000002",
+        "question": ["What is Dhurandhar's dominant poster color tone and emotional tone?"],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT t.title_name, p.dominant_color_tone, p.emotional_tone\n",
+              "FROM dataflix.content_signals.poster_signals p\n",
+              "JOIN dataflix.core.dim_title t ON p.title_id = t.title_id\n",
+              "WHERE t.title_name ILIKE '%Dhurandhar%'"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "4c000000000000000000000000000003",
+        "question": ["Which titles have a dark dominant color tone?"],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT t.title_name\n",
+              "FROM dataflix.content_signals.poster_signals p\n",
+              "JOIN dataflix.core.dim_title t ON p.title_id = t.title_id\n",
+              "WHERE p.dominant_color_tone = 'dark'\n",
+              "ORDER BY t.title_name"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

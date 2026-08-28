@@ -1,0 +1,180 @@
+{
+  "version": 2,
+  "config": {
+    "sample_questions": [
+      {
+        "id": "1b000000000000000000000000000001",
+        "question": [
+          "Which titles have licenses expiring in the next 30 days?"
+        ]
+      },
+      {
+        "id": "1b000000000000000000000000000002",
+        "question": [
+          "What is the renewal cost estimate for a title in a region?"
+        ]
+      },
+      {
+        "id": "1b000000000000000000000000000003",
+        "question": [
+          "Which titles are exclusively licensed in India?"
+        ]
+      },
+      {
+        "id": "1b000000000000000000000000000004",
+        "question": [
+          "List titles with licenses expiring in the next 45 days along with their rights holder"
+        ]
+      },
+      {
+        "id": "1b000000000000000000000000000005",
+        "question": [
+          "Which rights holder has the most titles licensed?"
+        ]
+      },
+      {
+        "id": "1b000000000000000000000000000006",
+        "question": [
+          "Is the license for Dhurandhar in India expiring soon?"
+        ]
+      },
+      {
+        "id": "1b000000000000000000000000000007",
+        "question": [
+          "What is Dhurandhar's official certification/rating in India?"
+        ]
+      },
+      {
+        "id": "1b000000000000000000000000000008",
+        "question": [
+          "What license types are used and how many titles have each?"
+        ]
+      },
+      {
+        "id": "1b000000000000000000000000000009",
+        "question": [
+          "Which titles have an exclusive license in the UK?"
+        ]
+      },
+      {
+        "id": "1b000000000000000000000000000010",
+        "question": [
+          "What is Spider-Man: Brand New Day's official certification in the US?"
+        ]
+      }
+    ]
+  },
+  "data_sources": {
+    "tables": [
+      {
+        "identifier": "dataflix.core.dim_region"
+      },
+      {
+        "identifier": "dataflix.core.dim_title"
+      },
+      {
+        "identifier": "dataflix.core.dim_title_certification"
+      },
+      {
+        "identifier": "dataflix.licensing.fact_licensing"
+      }
+    ]
+  },
+  "instructions": {
+    "example_question_sqls": [
+      {
+        "id": "2b000000000000000000000000000001",
+        "question": [
+          "Which titles have licenses expiring in the next 45 days?"
+        ],
+        "sql": [
+          "SELECT t.title_name, l.region_code, l.license_expiry, l.renewal_cost_estimate, l.rights_holder, l.exclusivity_flag\n",
+          "FROM dataflix.licensing.fact_licensing l\n",
+          "JOIN dataflix.core.dim_title t ON l.title_id = t.title_id\n",
+          "WHERE l.license_expiry <= date_add(current_date(), 45)\n",
+          "ORDER BY l.license_expiry ASC"
+        ]
+      },
+      {
+        "id": "2b000000000000000000000000000002",
+        "question": [
+          "What is a title's official certification/rating in a region?"
+        ],
+        "sql": [
+          "SELECT t.title_name, c.region_code, c.certification\n",
+          "FROM dataflix.core.dim_title_certification c\n",
+          "JOIN dataflix.core.dim_title t ON c.title_id = t.title_id\n",
+          "WHERE t.title_name ILIKE '%Dhurandhar%' AND c.region_code = 'IN'"
+        ]
+      }
+    ],
+    "text_instructions": [
+      {
+        "id": "3b000000000000000000000000000001",
+        "content": [
+          "This space covers Dataflix's own internal licensing terms for each title -- license_type, license_expiry, renewal_cost_estimate, exclusivity_flag, rights_holder -- AND dim_title_certification, which is REAL official content certification/rating data (e.g. PG-13, U/A 13+, TV-MA, A) sourced from TMDB, not fictional. For questions about a title's rating/certification/compliance status, query dim_title_certification directly (join on title_id and region_code) -- do not say certification data is unavailable, it is in this table.\n",
+          "fact_licensing grain is one row per (title_id, region_code) -- not every title has a row in every region, only the regions Dataflix currently licenses it for (2-3 regions per title on average).\n",
+          "region_code values are exactly: US, IN, BR, DE, JP, UK.\n",
+          "title_id format is '{movie|tv}_{tmdb_id}' -- always join to dim_title to resolve title_name rather than showing raw title_id.\n",
+          "license_type is one of: exclusive_svod, non_exclusive_svod, avod, output_deal.\n",
+          "rights_holder is always a FICTIONAL entity (e.g. 'Northgate Media Partners') -- these are not real studios or real people, this is synthetic demo data representing Dataflix's own (fictional) licensing relationships. Do not present these as real-world licensing facts.\n",
+          "This is a separate concept from dataflix.core.real_watch_providers (which is real, current streaming availability data from TMDB/JustWatch, not owned by this space) -- don't conflate the two if a cross-space question comes up.\n",
+          "For 'expiring soon' questions, default to a 45-day window unless the user specifies otherwise.\n",
+          "Two titles have hand-tuned data for demo purposes: 'Spider-Man: Brand New Day' (movie_969681) has a license expiring within 45 days in region US, and 'Dhurandhar' (movie_1291608) has a license expiring within 45 days in region IN -- both at a below-market renewal_cost_estimate.\n",
+          "TITLE MATCHING RULE: always match title_name with ILIKE '%<name>%' (case-insensitive, partial), never exact '='. The user's phrasing may have typos, partial names, or miss punctuation (e.g. 'Durandhar' should still match 'Dhurandhar'), and the catalog has near-duplicate titles (e.g. 'Dhurandhar' and 'Dhurandhar: The Revenge' are different titles) -- if a fuzzy match returns more than one title, show all matches rather than guessing or failing silently. If ILIKE finds NO match at all, the name may be misspelled (not just partial) -- fall back to levenshtein(lower(title_name), lower('<name_as_given>')) ORDER BY that value ASC LIMIT 3, and treat a result with distance <= 5 as the likely intended title (e.g. levenshtein('durandhar the revenge', 'dhurandhar: the revenge') = 1). State in your answer that you matched a likely misspelling, e.g. \"(matched 'Durandhar the Revenge' to 'Dhurandhar: The Revenge')\", rather than silently substituting it.\n",
+          "'EXCLUSIVE' HAS TWO DISTINCT MEANINGS IN THIS DATA, don't conflate them: exclusivity_flag (boolean) marks whether Dataflix holds exclusive distribution rights in that region, while license_type='exclusive_svod' (string) is a specific deal-type category alongside non_exclusive_svod/avod/output_deal. When a user asks for 'exclusive' titles without further qualification, filter on exclusivity_flag = true (the more literal reading of the word) rather than license_type -- but if the user says 'exclusive SVOD' or 'exclusive streaming deal', use license_type='exclusive_svod' instead.\n",
+          "Always format renewal_cost_estimate and other cost figures as currency in the answer (e.g. '$212,484.93'), never as a raw unformatted float."
+        ]
+      }
+    ]
+  },
+  "benchmarks": {
+    "questions": [
+      {
+        "id": "4b000000000000000000000000000001",
+        "question": ["How many titles have licenses expiring in the next 30 days?"],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT COUNT(*) AS titles_expiring_30d\n",
+              "FROM dataflix.licensing.fact_licensing\n",
+              "WHERE license_expiry <= date_add(current_date(), 30)"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "4b000000000000000000000000000002",
+        "question": ["Which rights holder has the most titles licensed?"],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT rights_holder, COUNT(DISTINCT title_id) AS title_count\n",
+              "FROM dataflix.licensing.fact_licensing\n",
+              "GROUP BY rights_holder\n",
+              "ORDER BY title_count DESC\n",
+              "LIMIT 1"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "4b000000000000000000000000000003",
+        "question": ["What is Spider-Man: Brand New Day's official certification in the US?"],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT c.certification\n",
+              "FROM dataflix.core.dim_title_certification c\n",
+              "JOIN dataflix.core.dim_title t ON c.title_id = t.title_id\n",
+              "WHERE t.title_name = 'Spider-Man: Brand New Day' AND c.region_code = 'US'"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

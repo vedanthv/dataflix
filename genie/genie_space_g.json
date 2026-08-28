@@ -1,0 +1,111 @@
+{
+  "version": 2,
+  "config": {
+    "sample_questions": [
+      {"id": "17000000000000000000000000000001", "question": ["Which thumbnail variant is winning for Spider-Man: Brand New Day, and why?"]},
+      {"id": "17000000000000000000000000000002", "question": ["Compare the original poster and all thumbnail variants for Dhurandhar"]},
+      {"id": "17000000000000000000000000000003", "question": ["Which titles have the highest average conversion rate?"]},
+      {"id": "17000000000000000000000000000004", "question": ["What's our total campaign spend by region?"]},
+      {"id": "17000000000000000000000000000005", "question": ["Does having more people in a thumbnail hurt or help CTR across our catalog?"]},
+      {"id": "17000000000000000000000000000006", "question": ["Which variant type performs best on average across all titles?"]},
+      {"id": "17000000000000000000000000000007", "question": ["What is the average CTR for face_closeup vs dramatic_regrade vs text_overlay?"]},
+      {"id": "17000000000000000000000000000008", "question": ["How many campaigns ran for Dhurandhar?"]}
+    ]
+  },
+  "data_sources": {
+    "tables": [
+      {"identifier": "dataflix.content_signals.poster_signals"},
+      {"identifier": "dataflix.content_signals.thumbnail_variant_signals"},
+      {"identifier": "dataflix.core.dim_title"},
+      {"identifier": "dataflix.marketing.fact_campaign_performance"}
+    ]
+  },
+  "instructions": {
+    "example_question_sqls": [
+      {
+        "id": "27000000000000000000000000000001",
+        "question": ["Which thumbnail variant is winning for a title, and why?"],
+        "sql": ["WITH ranked AS (\n", "  SELECT t.title_name, c.thumbnail_variant_id AS variant_id, v.variant_image_url AS image_url,\n", "         v.variant_description, v.dominant_color_tone,\n", "         round(avg(c.ctr), 4) AS ctr, round(avg(c.conversion_rate), 4) AS conversion_rate\n", "  FROM dataflix.marketing.fact_campaign_performance c\n", "  JOIN dataflix.core.dim_title t ON c.title_id = t.title_id\n", "  JOIN dataflix.content_signals.thumbnail_variant_signals v ON c.thumbnail_variant_id = v.variant_id AND c.title_id = v.title_id\n", "  WHERE t.title_name ILIKE '%Spider-Man: Brand New Day%'\n", "  GROUP BY t.title_name, c.thumbnail_variant_id, v.variant_image_url, v.variant_description, v.dominant_color_tone\n", "),\n", "original AS (\n", "  SELECT t.title_name, 'original' AS variant_id, p.poster_url AS image_url,\n", "         'unmodified original poster' AS variant_description, p.dominant_color_tone,\n", "         CAST(NULL AS DOUBLE) AS ctr, CAST(NULL AS DOUBLE) AS conversion_rate\n", "  FROM dataflix.content_signals.poster_signals p\n", "  JOIN dataflix.core.dim_title t ON p.title_id = t.title_id\n", "  WHERE t.title_name ILIKE '%Spider-Man: Brand New Day%'\n", "),\n", "combined AS (\n", "  SELECT * FROM ranked UNION ALL SELECT * FROM original\n", ")\n", "SELECT title_name, variant_id, image_url, ctr, conversion_rate,\n", "  CASE WHEN variant_id = 'original' THEN 'The real, unmodified poster art -- shown for reference.'\n", "  ELSE ai_query('databricks-meta-llama-3-3-70b-instruct',\n", "    concat('In one short plain-English sentence for a marketing audience -- no technical jargon, no field or column names -- explain why a movie thumbnail described as \"', variant_description, '\" with ', dominant_color_tone, ' tones would perform the way it does. It has a click-through rate of ', ctr, ' and conversion rate of ', conversion_rate, '.')\n", "  ) END AS business_explanation\n", "FROM combined\n", "ORDER BY CASE WHEN variant_id = 'original' THEN 0 ELSE 1 END, ctr DESC"]
+      },
+      {
+        "id": "27000000000000000000000000000002",
+        "question": ["Does face count or expressive faces correlate with CTR across the catalog?"],
+        "sql": ["SELECT v.face_count, v.has_expressive_face, avg(c.ctr) AS avg_ctr, avg(c.conversion_rate) AS avg_conversion_rate, count(*) AS n_campaigns\n", "FROM dataflix.marketing.fact_campaign_performance c\n", "JOIN dataflix.content_signals.thumbnail_variant_signals v ON c.thumbnail_variant_id = v.variant_id AND c.title_id = v.title_id\n", "GROUP BY v.face_count, v.has_expressive_face\n", "ORDER BY avg_ctr DESC"]
+      },
+      {
+        "id": "27000000000000000000000000000003",
+        "question": ["What's our total campaign spend and impressions by region?"],
+        "sql": ["SELECT region_code, sum(spend) AS total_spend, sum(impressions) AS total_impressions\n", "FROM dataflix.marketing.fact_campaign_performance\n", "GROUP BY region_code\n", "ORDER BY total_spend DESC"]
+      }
+    ],
+    "text_instructions": [
+      {
+        "id": "37000000000000000000000000000001",
+        "content": [
+          "This space answers 'which thumbnail/poster variant is performing best' questions by joining fact_campaign_performance (spend, impressions, ctr, conversion_rate) to thumbnail_variant_signals (variant_description, dominant_color_tone, face_count, has_expressive_face) on (title_id, thumbnail_variant_id = variant_id).\n",
+          "There are exactly 3 CAMPAIGN-TESTED variant_id values per title, each a genuinely distinct treatment: 'face_closeup' (real OpenCV face-detected crop tight on the most prominent face), 'dramatic_regrade' (full scene, cinematic desaturated/high-contrast color grade), and 'text_overlay' (full scene with the real title name burned into a bottom banner). For a SPECIFIC-TITLE comparison/display question (e.g. 'which variant is winning for X', 'compare variants for X', 'show me the thumbnails for X'), ALWAYS ALSO include a 4th entry, variant_id='original' -- the real unmodified TMDB poster from poster_signals (join on title_id), included for reference/comparison alongside the 3 tested variants, per the example query below. It has NO campaign performance (ctr/conversion_rate are NULL) since it was never actually tested as a thumbnail -- never invent numbers for it, and never call it a 'variant' in prose (it's the original, not a variant).\n",
+          "The 'original' entry is ONLY for single-title comparison/display questions above. For AGGREGATE or catalog-wide metric questions (e.g. 'average CTR by variant type', 'which variant type performs best overall', 'total campaign spend by region') -- questions with no single named title -- do NOT include an 'original' row: it has no performance numbers and doesn't belong in an aggregate over the 3 tested variant_id values.\n",
+          "fact_campaign_performance is fully SYNTHETIC (simulated demo numbers, not real ad-platform data) -- characterize it as such if asked. thumbnail_variant_signals' descriptions, color tones, face_count, and has_expressive_face ARE real signals (OpenCV face detection + vision-FM tagging) applied to derived variants of the one real TMDB poster per title. poster_signals' poster_url is the real, live, unmodified TMDB poster image. The synthetic performance numbers deliberately encode Netflix's own published artwork A/B-testing findings (expressive faces perform better, crowded/many-face shots underperform) -- this is a deliberate, explainable simulation design, not noise.\n",
+          "BUSINESS LANGUAGE RULE, always follow this: when explaining WHY a variant performs the way it does, use the 'business_explanation' column from ai_query() shown in the example query above (call it fresh for each new question, don't reuse stale text). NEVER surface raw field/column names like 'has_expressive_face', 'face_count', or 'dominant_color_tone' in your prose -- always translate to plain marketing language a non-technical person would use (e.g. 'an expressive close-up builds an emotional connection with viewers' instead of 'has_expressive_face=true'; 'a shot crowded with several people dilutes the focal point' instead of 'face_count > 3').\n",
+          "Coverage is intentionally PARTIAL -- only 10 titles have thumbnail variants (3 tested variants + the original each), not the full catalog. If a title has no rows here, say so rather than implying no campaign ran.\n",
+          "One title has a clear, demo-ready winner on top of the general pattern: Spider-Man: Brand New Day (movie_969681) in the US -- 'face_closeup' meaningfully outperforms the other two tested variants. For other titles, follow the actual numbers -- which variant wins genuinely varies title to title.\n",
+          "'Winning' should be judged primarily on ctr and conversion_rate (rate metrics) among the 3 TESTED variants only -- never rank 'original' against them since it has no performance data, and never treat raw impressions or spend alone as 'winning'.\n",
+          "title_id format is '{movie|tv}_{tmdb_id}' -- always join to dim_title to resolve title_name.\n",
+          "TITLE MATCHING RULE: always match title_name with ILIKE '%<name>%' (case-insensitive, partial), never exact '='. The user's phrasing may have typos, partial names, or miss punctuation (e.g. 'Durandhar' should still match 'Dhurandhar'), and the catalog has near-duplicate titles (e.g. 'Dhurandhar' and 'Dhurandhar: The Revenge' are different titles) -- if a fuzzy match returns more than one title, show all matches rather than guessing or failing silently. If ILIKE finds NO match at all, the name may be misspelled (not just partial) -- fall back to levenshtein(lower(title_name), lower('<name_as_given>')) ORDER BY that value ASC LIMIT 3, and treat a result with distance <= 5 as the likely intended title (e.g. levenshtein('durandhar the revenge', 'dhurandhar: the revenge') = 1). State in your answer that you matched a likely misspelling, e.g. \"(matched 'Durandhar the Revenge' to 'Dhurandhar: The Revenge')\", rather than silently substituting it.\n",
+          "This space is dual-homed with Genie Space C (Content Signals) via thumbnail_variant_signals AND now also reads poster_signals directly (for the 'original' entry above) -- Genie C covers qualitative poster/variant description questions with no campaign join; this space (G) covers the performance/metrics side plus the full original+variants comparison set.\n",
+          "IMAGE DISPLAY RULE, always follow this exactly: do NOT emit individual markdown ![...](...) image tags for thumbnail variants or the original poster. Instead, ALWAYS append a single structured data block on its own line at the very end of your answer, in EXACTLY this format (valid JSON array, ALWAYS 4 objects per title -- the 3 tested variants plus 'original' -- using the real title/variant_id/image_url values from your query, ctr/conversion_rate as null for 'original', do not invent or omit fields):\n",
+          "<!--THUMBNAILS:[{\"title\":\"<title_name>\",\"variant_id\":\"original\",\"image_url\":\"<image_url>\",\"ctr\":null,\"conversion_rate\":null},{\"title\":\"<title_name>\",\"variant_id\":\"<variant_id>\",\"image_url\":\"<image_url>\",\"ctr\":<ctr>,\"conversion_rate\":<conversion_rate>},...]-->\n",
+          "This drives a dedicated UI component that renders the images in a carousel with hover tooltips -- it is NOT shown to the user as raw text, so it must be syntactically exact (valid JSON, correct field names, real values from the query result, no markdown formatting inside it, no trailing commentary after it).\n",
+          "face_count = 0 is a REAL, valid detection result (no face found in that crop), not missing/null data -- there are no nulls in this column. Never filter out or treat face_count=0 rows as incomplete; they are legitimate signal, especially for dramatic_regrade variants which are often full-scene shots with no close-up face.\n",
+          "ctr and conversion_rate are stored as FRACTIONS between 0 and 1 (e.g. 0.0559), never as 0-100 percentages -- always multiply by 100 and present as a percentage with a % sign in the answer (e.g. '5.59%'), never show the raw decimal."
+        ]
+      }
+    ]
+  },
+  "benchmarks": {
+    "questions": [
+      {
+        "id": "47000000000000000000000000000001",
+        "question": ["What is the average CTR by thumbnail variant type across the catalog?"],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT thumbnail_variant_id, ROUND(AVG(ctr) * 100, 2) AS avg_ctr_pct\n",
+              "FROM dataflix.marketing.fact_campaign_performance\n",
+              "GROUP BY thumbnail_variant_id\n",
+              "ORDER BY avg_ctr_pct DESC"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "47000000000000000000000000000002",
+        "question": ["How many campaigns have been run in total?"],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT COUNT(*) AS total_campaigns FROM dataflix.marketing.fact_campaign_performance"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "47000000000000000000000000000003",
+        "question": ["What is the total campaign spend for Spider-Man: Brand New Day?"],
+        "answer": [
+          {
+            "format": "SQL",
+            "content": [
+              "SELECT ROUND(SUM(c.spend), 2) AS total_spend\n",
+              "FROM dataflix.marketing.fact_campaign_performance c\n",
+              "JOIN dataflix.core.dim_title t ON c.title_id = t.title_id\n",
+              "WHERE t.title_name = 'Spider-Man: Brand New Day'"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
