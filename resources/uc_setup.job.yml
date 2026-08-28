@@ -1,0 +1,101 @@
+resources:
+  jobs:
+    uc_setup:
+      name: "[${bundle.target}] dataflix - UC catalog/schema/table setup"
+      tasks:
+        - task_key: create_catalog
+          sql_task:
+            file:
+              path: ../src/sql/01_create_catalog.sql
+              source: WORKSPACE
+            warehouse_id: ${var.warehouse_id}
+
+        - task_key: create_schemas
+          depends_on:
+            - task_key: create_catalog
+          sql_task:
+            file:
+              path: ../src/sql/02_create_schemas.sql
+              source: WORKSPACE
+            warehouse_id: ${var.warehouse_id}
+
+        - task_key: create_core_tables
+          depends_on:
+            - task_key: create_schemas
+          sql_task:
+            file:
+              path: ../src/sql/03_core_tables.sql
+              source: WORKSPACE
+            warehouse_id: ${var.warehouse_id}
+
+        - task_key: create_engagement_tables
+          depends_on:
+            - task_key: create_schemas
+          sql_task:
+            file:
+              path: ../src/sql/04_engagement_tables.sql
+              source: WORKSPACE
+            warehouse_id: ${var.warehouse_id}
+
+        - task_key: create_licensing_tables
+          depends_on:
+            - task_key: create_schemas
+          sql_task:
+            file:
+              path: ../src/sql/05_licensing_tables.sql
+              source: WORKSPACE
+            warehouse_id: ${var.warehouse_id}
+
+        - task_key: create_content_signals_tables
+          depends_on:
+            - task_key: create_schemas
+          sql_task:
+            file:
+              path: ../src/sql/06_content_signals_tables.sql
+              source: WORKSPACE
+            warehouse_id: ${var.warehouse_id}
+
+        - task_key: create_support_tables
+          depends_on:
+            - task_key: create_schemas
+          sql_task:
+            file:
+              path: ../src/sql/07_support_tables.sql
+              source: WORKSPACE
+            warehouse_id: ${var.warehouse_id}
+
+        - task_key: create_competitive_tables
+          depends_on:
+            - task_key: create_schemas
+          sql_task:
+            file:
+              path: ../src/sql/08_competitive_tables.sql
+              source: WORKSPACE
+            warehouse_id: ${var.warehouse_id}
+
+        - task_key: create_marketing_tables
+          depends_on:
+            - task_key: create_schemas
+          sql_task:
+            file:
+              path: ../src/sql/09_marketing_tables.sql
+              source: WORKSPACE
+            warehouse_id: ${var.warehouse_id}
+
+        - task_key: create_ml_tables
+          depends_on:
+            - task_key: create_schemas
+          sql_task:
+            file:
+              path: ../src/sql/10_ml_tables.sql
+              source: WORKSPACE
+            warehouse_id: ${var.warehouse_id}
+
+        - task_key: create_docs_tables
+          depends_on:
+            - task_key: create_schemas
+          sql_task:
+            file:
+              path: ../src/sql/11_docs_tables.sql
+              source: WORKSPACE
+            warehouse_id: ${var.warehouse_id}

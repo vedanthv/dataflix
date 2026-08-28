@@ -1,0 +1,16 @@
+bundle:
+  name: dataflix
+
+include:
+  - resources/*.yml
+
+variables:
+  warehouse_id:
+    default: 014949aba932023b
+
+targets:
+  dev:
+    default: true
+    mode: development
+    workspace:
+      profile: DEFAULT

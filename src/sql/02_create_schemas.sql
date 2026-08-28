@@ -1,0 +1,9 @@
+CREATE SCHEMA IF NOT EXISTS dataflix.core;
+CREATE SCHEMA IF NOT EXISTS dataflix.engagement;
+CREATE SCHEMA IF NOT EXISTS dataflix.licensing;
+CREATE SCHEMA IF NOT EXISTS dataflix.content_signals;
+CREATE SCHEMA IF NOT EXISTS dataflix.support;
+CREATE SCHEMA IF NOT EXISTS dataflix.competitive;
+CREATE SCHEMA IF NOT EXISTS dataflix.marketing;
+CREATE SCHEMA IF NOT EXISTS dataflix.ml;
+CREATE SCHEMA IF NOT EXISTS dataflix.docs;

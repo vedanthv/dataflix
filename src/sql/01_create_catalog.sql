@@ -1,0 +1,1 @@
+CREATE CATALOG IF NOT EXISTS dataflix;
