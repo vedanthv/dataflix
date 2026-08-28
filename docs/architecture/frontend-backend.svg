@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 640" width="100%">
+<rect x="0" y="0" width="1240" height="640" fill="#0d0d0d"/>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b5b5b"/>
+    </marker>
+    <marker id="arrowred" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#E50914"/>
+    </marker>
+  </defs>
+
+<text x="40" y="50" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="700" fill="#e5e5e5" text-anchor="start" letter-spacing="0.5px">ONE NEXT.JS APP — FRONTEND + BACKEND, SIDE BY SIDE</text>
+<text x="40" y="74" font-family="Helvetica, Arial, sans-serif" font-size="12.5" font-weight="400" fill="#8c8c8c" text-anchor="start">There is no separate backend server — every route below is one file in the same app/ directory, deployed as a single Databricks App</text>
+<rect x="40" y="110" width="560" height="36" rx="10" fill="#0c1d14" stroke="#1f6b3a" stroke-width="1.5"/>
+<text x="320.0" y="134" font-family="Helvetica, Arial, sans-serif" font-size="12.5" font-weight="700" fill="#e5e5e5" text-anchor="middle">FRONTEND  —  runs in the browser  (app/**/page.js)</text>
+<rect x="640" y="110" width="560" height="36" rx="10" fill="#1f0507" stroke="#E50914" stroke-width="1.5"/>
+<text x="920.0" y="134" font-family="Helvetica, Arial, sans-serif" font-size="12.5" font-weight="700" fill="#e5e5e5" text-anchor="middle">BACKEND  —  runs on the server  (app/api/**/route.js)</text>
+<rect x="40" y="166" width="560" height="54" rx="10" fill="#1f1f1f" stroke="#3a3a3a" stroke-width="1.5"/>
+<text x="56" y="186" font-family="Menlo, Consolas, monospace" font-size="12" font-weight="700" fill="#e5e5e5" text-anchor="start">app/page.js</text>
+<text x="56" y="202" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">Landing page — cinematic slide intro + persona</text>
+<text x="56" y="216" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">picker</text>
+<rect x="40" y="232" width="560" height="40" rx="10" fill="#1f1f1f" stroke="#3a3a3a" stroke-width="1.5"/>
+<text x="56" y="252" font-family="Menlo, Consolas, monospace" font-size="12" font-weight="700" fill="#e5e5e5" text-anchor="start">app/capabilities/page.js</text>
+<text x="56" y="268" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">What each persona solves, standalone detail page</text>
+<rect x="40" y="284" width="560" height="82" rx="10" fill="#1f1f1f" stroke="#3a3a3a" stroke-width="1.5"/>
+<text x="56" y="304" font-family="Menlo, Consolas, monospace" font-size="12" font-weight="700" fill="#e5e5e5" text-anchor="start">app/chat/[persona]/page.js</text>
+<text x="56" y="320" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">The chat UI itself — one file renders all 7</text>
+<text x="56" y="334" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">personas via the dynamic [persona] route</text>
+<text x="56" y="348" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">segment; manages message state, SSE reading,</text>
+<text x="56" y="362" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">file attach, history drawer</text>
+<rect x="40" y="378" width="560" height="40" rx="10" fill="#1f1f1f" stroke="#3a3a3a" stroke-width="1.5"/>
+<text x="56" y="398" font-family="Menlo, Consolas, monospace" font-size="12" font-weight="700" fill="#e5e5e5" text-anchor="start">app/architecture/page.js</text>
+<text x="56" y="414" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">This interactive diagram, inside the app</text>
+<rect x="640" y="166" width="560" height="54" rx="10" fill="#1f1f1f" stroke="#c94a52" stroke-width="1.4"/>
+<text x="656" y="186" font-family="Menlo, Consolas, monospace" font-size="12" font-weight="700" fill="#e5e5e5" text-anchor="start">api/chat</text>
+<text x="656" y="202" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">Proxies to the Supervisor Agent, relays its SSE</text>
+<text x="656" y="216" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">stream to the browser</text>
+<rect x="640" y="232" width="560" height="54" rx="10" fill="#1f1f1f" stroke="#3a7bd5" stroke-width="1.4"/>
+<text x="656" y="252" font-family="Menlo, Consolas, monospace" font-size="12" font-weight="700" fill="#e5e5e5" text-anchor="start">api/casting</text>
+<text x="656" y="268" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">Direct SQL + AI Functions pipeline — bypasses</text>
+<text x="656" y="282" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">the agent entirely</text>
+<rect x="640" y="298" width="560" height="54" rx="10" fill="#1f1f1f" stroke="#3a7bd5" stroke-width="1.4"/>
+<text x="656" y="318" font-family="Menlo, Consolas, monospace" font-size="12" font-weight="700" fill="#e5e5e5" text-anchor="start">api/contract-ingest</text>
+<text x="656" y="334" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">Same direct-SQL pattern as casting, writes to</text>
+<text x="656" y="348" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">fact_licensing</text>
+<rect x="640" y="364" width="560" height="54" rx="10" fill="#1f1f1f" stroke="#3a7bd5" stroke-width="1.4"/>
+<text x="656" y="384" font-family="Menlo, Consolas, monospace" font-size="12" font-weight="700" fill="#e5e5e5" text-anchor="start">api/compliance-memo + /pdf</text>
+<text x="656" y="400" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">Same direct-SQL pattern, plus a PDF export</text>
+<text x="656" y="414" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">endpoint</text>
+<rect x="640" y="430" width="560" height="40" rx="10" fill="#1f1f1f" stroke="#8c8c8c" stroke-width="1.4"/>
+<text x="656" y="450" font-family="Menlo, Consolas, monospace" font-size="12" font-weight="700" fill="#e5e5e5" text-anchor="start">api/session, /sessions, /sessions/[id]</text>
+<text x="656" y="466" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">Lakebase session + history-drawer plumbing</text>
+<rect x="640" y="482" width="560" height="40" rx="10" fill="#1f1f1f" stroke="#8c8c8c" stroke-width="1.4"/>
+<text x="656" y="502" font-family="Menlo, Consolas, monospace" font-size="12" font-weight="700" fill="#e5e5e5" text-anchor="start">api/history-questions, /followups</text>
+<text x="656" y="518" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="start">ai_query-personalized suggestion chips</text>
+<circle cx="645" cy="540" r="4" fill="#c94a52"/>
+<text x="656" y="544" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b5b5b" text-anchor="start">Supervisor Agent proxy</text>
+<circle cx="805.6" cy="540" r="4" fill="#3a7bd5"/>
+<text x="816.6" y="544" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b5b5b" text-anchor="start">Direct SQL + AI Functions</text>
+<circle cx="985.1" cy="540" r="4" fill="#8c8c8c"/>
+<text x="996.1" y="544" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b5b5b" text-anchor="start">Session/history plumbing</text>
+<text x="40" y="616" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b5b5b" text-anchor="start">docs/architecture/frontend-backend.svg</text>
+</svg>

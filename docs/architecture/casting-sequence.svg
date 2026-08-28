@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 960" width="100%">
+<rect x="0" y="0" width="1240" height="960" fill="#0d0d0d"/>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b5b5b"/>
+    </marker>
+    <marker id="arrowred" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#E50914"/>
+    </marker>
+  </defs>
+
+<text x="40" y="50" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="700" fill="#e5e5e5" text-anchor="start" letter-spacing="0.5px">CASTING RECOMMENDATION — REQUEST SEQUENCE</text>
+<text x="40" y="74" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#8c8c8c" text-anchor="start">The same shape as contract-ingest and compliance-memo: direct SQL + AI Functions, no agent involved — 7 sequential round-trips collapsed into 4 concurrent stages</text>
+<rect x="30" y="110" width="220" height="44" rx="8" fill="#1f1f1f" stroke="#3a7bd5" stroke-width="1.8"/>
+<text x="140" y="132.0" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#e5e5e5" text-anchor="middle">Browser</text>
+<line x1="140" y1="154" x2="140" y2="930" stroke="#333333" stroke-width="1.3" stroke-dasharray="4,4"/>
+<rect x="450" y="110" width="220" height="44" rx="8" fill="#1f1f1f" stroke="#E50914" stroke-width="1.8"/>
+<text x="560" y="132.0" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#e5e5e5" text-anchor="middle">Next.js backend</text>
+<line x1="560" y1="154" x2="560" y2="930" stroke="#333333" stroke-width="1.3" stroke-dasharray="4,4"/>
+<rect x="930" y="110" width="220" height="44" rx="8" fill="#1f1f1f" stroke="#c99a2e" stroke-width="1.8"/>
+<text x="1040" y="124.5" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#e5e5e5" text-anchor="middle">Databricks SQL Warehouse</text>
+<text x="1040" y="139.5" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#e5e5e5" text-anchor="middle">(AI Functions)</text>
+<line x1="1040" y1="154" x2="1040" y2="930" stroke="#333333" stroke-width="1.3" stroke-dasharray="4,4"/>
+<path d="M 140,194 L 560,194" fill="none" stroke="#8c8c8c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="350.0" y="186" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="middle">POST { scriptPdfBase64, filename }</text>
+<path d="M 560,272 L 1040,272" fill="none" stroke="#8c8c8c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="800.0" y="264" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="middle">upload PDF to UC Volume  +  fetch real genres</text>
+<text x="800.0" y="286" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="middle">run concurrently — neither depends on the other</text>
+<path d="M 560,370 L 1040,370" fill="none" stroke="#8c8c8c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="800.0" y="362" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="middle">ai_parse_document → ai_summarize + ai_extract</text>
+<text x="800.0" y="384" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="middle">one SQL statement: parses the PDF, then a logline</text>
+<text x="800.0" y="397" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="middle">+ {genre, tone, themes, characters} constrained to</text>
+<text x="800.0" y="410" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="middle">real dim_title genre values</text>
+<path d="M 560,496 L 1040,496" fill="none" stroke="#8c8c8c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="800.0" y="475" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="middle">VECTOR_SEARCH + ai_analyze_sentiment  +</text>
+<text x="800.0" y="488" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="middle">career stats  +  Dataflix history</text>
+<text x="800.0" y="510" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="middle">3 independent queries, run concurrently —</text>
+<text x="800.0" y="523" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="middle">candidate actors, their real TMDB career-genre</text>
+<text x="800.0" y="536" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="middle">rating, and any Dataflix catalog history</text>
+<path d="M 560,622 L 1040,622" fill="none" stroke="#8c8c8c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="800.0" y="601" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="middle">ai_query (top-5 ranking)  +  ai_query (per-</text>
+<text x="800.0" y="614" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="middle">character casting)</text>
+<text x="800.0" y="636" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="middle">2 concurrent LLM synthesis passes over the same</text>
+<text x="800.0" y="649" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="middle">candidate pool and signals</text>
+<path d="M 560,734 L 140,734" fill="none" stroke="#8c8c8c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="350.0" y="713" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="middle">JSON { recommendations, characterCasting, ...</text>
+<text x="350.0" y="726" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="middle">}</text>
+<path d="M 560,812 C 630,812 630,838 560,838" fill="none" stroke="#8c8c8c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="576" y="804" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="start">addMessage() → Lakebase</text>
+<text x="576" y="838" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="start">persists the full result so the history drawer can</text>
+<text x="576" y="851" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="start">rehydrate it later</text>
+</svg>

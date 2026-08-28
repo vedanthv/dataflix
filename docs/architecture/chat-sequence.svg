@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 1222" width="100%">
+<rect x="0" y="0" width="1240" height="1222" fill="#0d0d0d"/>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b5b5b"/>
+    </marker>
+    <marker id="arrowred" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#E50914"/>
+    </marker>
+  </defs>
+
+<text x="40" y="50" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="700" fill="#e5e5e5" text-anchor="start" letter-spacing="0.5px">CHAT MESSAGE — REQUEST SEQUENCE</text>
+<text x="40" y="74" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#8c8c8c" text-anchor="start">The trickiest part of the app: relaying a long-running agent stream through a heartbeat so no proxy times it out mid tool-call</text>
+<rect x="50" y="110" width="220" height="44" rx="8" fill="#1f1f1f" stroke="#3a7bd5" stroke-width="1.8"/>
+<text x="160" y="132.0" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#e5e5e5" text-anchor="middle">Browser</text>
+<line x1="160" y1="154" x2="160" y2="1192" stroke="#333333" stroke-width="1.3" stroke-dasharray="4,4"/>
+<rect x="510" y="110" width="220" height="44" rx="8" fill="#1f1f1f" stroke="#E50914" stroke-width="1.8"/>
+<text x="620" y="132.0" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#e5e5e5" text-anchor="middle">Next.js backend</text>
+<line x1="620" y1="154" x2="620" y2="1192" stroke="#333333" stroke-width="1.3" stroke-dasharray="4,4"/>
+<rect x="970" y="110" width="220" height="44" rx="8" fill="#1f1f1f" stroke="#c99a2e" stroke-width="1.8"/>
+<text x="1080" y="124.5" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#e5e5e5" text-anchor="middle">Databricks</text>
+<text x="1080" y="139.5" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="700" fill="#e5e5e5" text-anchor="middle">Supervisor Endpoint</text>
+<line x1="1080" y1="154" x2="1080" y2="1192" stroke="#333333" stroke-width="1.3" stroke-dasharray="4,4"/>
+<path d="M 160,194 L 620,194" fill="none" stroke="#8c8c8c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="390.0" y="186" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="middle">POST { message, sessionId, history }</text>
+<path d="M 620,272 C 690,272 690,298 620,298" fill="none" stroke="#8c8c8c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="636" y="264" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="start">getAccessToken()</text>
+<text x="636" y="298" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="start">OAuth client-credentials exchange, cached until</text>
+<text x="636" y="311" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="start">near-expiry</text>
+<path d="M 620,384 L 1080,384" fill="none" stroke="#8c8c8c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="850.0" y="376" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="middle">POST .../invocations  { input, stream: true }</text>
+<path d="M 1080,462 L 620,462" fill="none" stroke="#8c8c8c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="850.0" y="454" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="middle">response.output_text.delta ...</text>
+<text x="850.0" y="476" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="middle">real token-by-token model output, streamed</text>
+<path d="M 1080,560 L 620,560" fill="none" stroke="#8c8c8c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="850.0" y="552" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="middle">response.output_item.done (function_call)</text>
+<text x="850.0" y="574" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="middle">the ONLY signal a tool ran — no deltas precede a</text>
+<text x="850.0" y="587" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="middle">tool call</text>
+<path d="M 620,672 C 690,672 690,698 620,698" fill="none" stroke="#8c8c8c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="636" y="664" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="start">relayToSimpleSSE()</text>
+<text x="636" y="698" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="start">re-emits a simpler protocol: {type:&quot;text&quot;},</text>
+<text x="636" y="711" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="start">{type:&quot;tool_call&quot;}, {type:&quot;done&quot;}</text>
+<path d="M 620,784 L 160,784" fill="none" stroke="#8c8c8c" stroke-width="1.8" stroke-dasharray="6,4" marker-end="url(#arrow)"/>
+<text x="390.0" y="776" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="middle">: heartbeat  (every 8s of silence)</text>
+<text x="390.0" y="798" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="middle">keeps the connection&#x27;s bytes flowing so no proxy&#x27;s</text>
+<text x="390.0" y="811" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="middle">idle-timeout kills it mid tool-call</text>
+<path d="M 620,896 L 160,896" fill="none" stroke="#8c8c8c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="390.0" y="888" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="middle">data: {type:&quot;text&quot;, delta}</text>
+<text x="390.0" y="910" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="middle">Browser resets its own 30s idle-abort timer on</text>
+<text x="390.0" y="923" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="middle">every chunk received, heartbeats included</text>
+<path d="M 620,1008 L 160,1008" fill="none" stroke="#8c8c8c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="390.0" y="1000" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="middle">data: {type:&quot;done&quot;}</text>
+<path d="M 620,1086 C 690,1086 690,1112 620,1112" fill="none" stroke="#8c8c8c" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="636" y="1078" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#e5e5e5" text-anchor="start">addMessage() → Lakebase</text>
+<text x="636" y="1112" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="start">fire-and-forget persistence, never blocks the</text>
+<text x="636" y="1125" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#5b5b5b" text-anchor="start">stream to the browser</text>
+</svg>
