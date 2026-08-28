@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 1080" width="100%">
+<rect x="0" y="0" width="1240" height="1080" fill="#0d0d0d"/>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b5b5b"/>
+    </marker>
+    <marker id="arrowred" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#E50914"/>
+    </marker>
+  </defs>
+
+<text x="40" y="50" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#e5e5e5" text-anchor="start" letter-spacing="0.5px">SUPERVISOR AGENT — TOOL ROUTING LOGIC</text>
+<text x="40" y="74" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#8c8c8c" text-anchor="start">How the agent decides which tool(s) to call for a question, distilled from its live instructions</text>
+<rect x="460" y="110" width="320" height="50" rx="25.0" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1.5"/>
+<text x="620" y="142" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#e5e5e5" text-anchor="middle" letter-spacing="0.5px">USER QUESTION</text>
+<line x1="620" y1="160" x2="620" y2="200" stroke="#5b5b5b" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="290" y="200" width="660" height="56" rx="28.0" fill="#241a04" stroke="#8a6a10" stroke-width="1.5"/>
+<text x="620" y="224" font-family="Helvetica, Arial, sans-serif" font-size="12.5" font-weight="700" fill="#e5e5e5" text-anchor="middle">Is this a general question about a PERSON — actor, director, producer?</text>
+<text x="620" y="242" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="middle">(“who is X”, “tell me about X”)</text>
+<line x1="620" y1="256" x2="620" y2="296" stroke="#5b5b5b" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="636" y="280" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="400" fill="#8c8c8c" text-anchor="start">NO — unless it explicitly asks about Dataflix&#x27;s own catalog for that person</text>
+<rect x="290" y="296" width="660" height="56" rx="28.0" fill="#241a04" stroke="#8a6a10" stroke-width="1.5"/>
+<text x="620" y="320" font-family="Helvetica, Arial, sans-serif" font-size="12.5" font-weight="700" fill="#e5e5e5" text-anchor="middle">Does the question map to a specific Dataflix domain?</text>
+<text x="620" y="338" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="400" fill="#8c8c8c" text-anchor="middle">watch-hours/cast · licensing/certification · poster style · campaigns · regulatory text</text>
+<path d="M 330,324 L 370,314" fill="none" stroke="#5b5b5b" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="350" y="302" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#c99a2e" text-anchor="end">YES</text>
+<rect x="140" y="286" width="230" height="90" rx="10" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+<text x="156" y="308" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="700" fill="#8c8c8c" text-anchor="start">CALL THE MATCHING TOOL</text>
+<text x="156" y="326" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#e5e5e5" text-anchor="start">• engagement</text>
+<text x="156" y="337" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#e5e5e5" text-anchor="start">• licensing</text>
+<text x="156" y="348" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#e5e5e5" text-anchor="start">• content_signals</text>
+<text x="156" y="359" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#e5e5e5" text-anchor="start">• marketing</text>
+<text x="156" y="370" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#e5e5e5" text-anchor="start">• documents</text>
+<line x1="620" y1="352" x2="620" y2="382" stroke="#5b5b5b" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="636" y="370" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="400" fill="#8c8c8c" text-anchor="start">NOT a Dataflix domain (revenue, rating, trending, bio, streaming availability...)</text>
+<rect x="850" y="382" width="300" height="4" rx="10" fill="none" stroke="#333333" stroke-width="1.5"/>
+<path d="M 910,228 L 867,228 L 867,382" fill="none" stroke="#5b5b5b" stroke-width="1.8" marker-end="url(#arrow)"/>
+<text x="879" y="222" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="700" fill="#c99a2e" text-anchor="start">YES</text>
+<text x="879" y="238" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#8c8c8c" text-anchor="start">→ external chain only</text>
+<rect x="850" y="382" width="340" height="92" rx="10" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+<rect x="850" y="382" width="34" height="92" rx="10" fill="#7a0810" stroke="#333333" stroke-width="1.5"/>
+<text x="867" y="434.0" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#e5e5e5" text-anchor="middle">1</text>
+<text x="900" y="404" font-family="Helvetica, Arial, sans-serif" font-size="12.5" font-weight="700" fill="#e5e5e5" text-anchor="start">tmdb_search_titles</text>
+<text x="900" y="422" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#8c8c8c" text-anchor="start">TMDB search is literal, not fuzzy — retry</text>
+<text x="900" y="436" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#8c8c8c" text-anchor="start">ONCE with a corrected spelling or trimmed</text>
+<text x="900" y="450" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#8c8c8c" text-anchor="start">name if it returns nothing, before</text>
+<text x="900" y="464" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#8c8c8c" text-anchor="start">concluding no match exists.</text>
+<line x1="867" y1="474" x2="867" y2="488" stroke="#5b5b5b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="850" y="488" width="340" height="92" rx="10" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+<rect x="850" y="488" width="34" height="92" rx="10" fill="#7a0810" stroke="#333333" stroke-width="1.5"/>
+<text x="867" y="540.0" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#e5e5e5" text-anchor="middle">2</text>
+<text x="900" y="510" font-family="Helvetica, Arial, sans-serif" font-size="12.5" font-weight="700" fill="#e5e5e5" text-anchor="start">tmdb_movie_details</text>
+<text x="900" y="528" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#8c8c8c" text-anchor="start">Only if the question is about box office,</text>
+<text x="900" y="542" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#8c8c8c" text-anchor="start">revenue, or budget — real TMDB financial</text>
+<text x="900" y="556" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#8c8c8c" text-anchor="start">data.</text>
+<line x1="867" y1="580" x2="867" y2="594" stroke="#5b5b5b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="850" y="594" width="340" height="92" rx="10" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+<rect x="850" y="594" width="34" height="92" rx="10" fill="#7a0810" stroke="#333333" stroke-width="1.5"/>
+<text x="867" y="646.0" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#e5e5e5" text-anchor="middle">3</text>
+<text x="900" y="616" font-family="Helvetica, Arial, sans-serif" font-size="12.5" font-weight="700" fill="#e5e5e5" text-anchor="start">tmdb_trending  /  Trends MCP</text>
+<text x="900" y="634" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#8c8c8c" text-anchor="start">Only if the question is about trends or</text>
+<text x="900" y="648" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#8c8c8c" text-anchor="start">current audience demand.</text>
+<line x1="867" y1="686" x2="867" y2="700" stroke="#5b5b5b" stroke-width="1.6" marker-end="url(#arrow)"/>
+<rect x="850" y="700" width="340" height="92" rx="10" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+<rect x="850" y="700" width="34" height="92" rx="10" fill="#7a0810" stroke="#333333" stroke-width="1.5"/>
+<text x="867" y="752.0" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#e5e5e5" text-anchor="middle">4</text>
+<text x="900" y="722" font-family="Helvetica, Arial, sans-serif" font-size="12.5" font-weight="700" fill="#e5e5e5" text-anchor="start">web_search  (DuckDuckGo)</text>
+<text x="900" y="740" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#8c8c8c" text-anchor="start">Genuine last resort only — weak on</text>
+<text x="900" y="754" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#8c8c8c" text-anchor="start">obscure/fictional titles; empty result means</text>
+<text x="900" y="768" font-family="Helvetica, Arial, sans-serif" font-size="9.5" font-weight="400" fill="#8c8c8c" text-anchor="start">‘not found’, not ‘doesn&#x27;t exist’.</text>
+<path d="M 255,376 L 255,812 L 480,812 L 480,832" fill="none" stroke="#5b5b5b" stroke-width="1.8" marker-end="url(#arrow)"/>
+<path d="M 867,792 L 867,812 L 760,812 L 760,832" fill="none" stroke="#5b5b5b" stroke-width="1.8" marker-end="url(#arrow)"/>
+<rect x="320" y="832" width="600" height="76" rx="14" fill="#1f0507" stroke="#E50914" stroke-width="2.5"/>
+<text x="620" y="862" font-family="Helvetica, Arial, sans-serif" font-size="13.5" font-weight="700" fill="#e5e5e5" text-anchor="middle" letter-spacing="0.5px">SYNTHESIZE FINAL ANSWER</text>
+<text x="620" y="884" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="middle">compound questions call every relevant tool and surface tension between them;</text>
+<text x="620" y="898" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#8c8c8c" text-anchor="middle">every externally-sourced fact is labeled  —  “Source: TMDB”, “Source: Trends MCP”, etc.</text>
+<text x="40" y="948" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b5b5b" text-anchor="start">docs/architecture/agent-routing.svg  ·  distilled from the live Supervisor Agent instructions — see docs/supervisor-agent.md for the full text</text>
+</svg>

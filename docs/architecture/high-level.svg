@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 880" width="100%">
+<rect x="0" y="0" width="1240" height="880" fill="#0d0d0d"/>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5b5b5b"/>
+    </marker>
+    <marker id="arrowred" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#E50914"/>
+    </marker>
+  </defs>
+
+<text x="40" y="50" font-family="Helvetica, Arial, sans-serif" font-size="24" font-weight="700" fill="#e5e5e5" text-anchor="start" letter-spacing="0.5px">DATAFLIX — SYSTEM ARCHITECTURE</text>
+<text x="40" y="74" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#8c8c8c" text-anchor="start">End-to-end: real + synthetic data → Unity Catalog → agent tools → Supervisor Agent → Databricks App → user</text>
+<text x="40" y="91" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#E50914" text-anchor="start" letter-spacing="1px">DATA SOURCES</text>
+<rect x="40" y="105" width="560" height="60" rx="10" fill="#1f1f1f" stroke="#333333" stroke-width="1.5"/>
+<text x="60" y="130" font-family="Helvetica, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#e5e5e5" text-anchor="start">TMDB API — real catalog</text>
+<text x="60" y="146" font-family="Helvetica, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#e5e5e5" text-anchor="start">130 titles, posters, cast, genres, ratings</text>
+<rect x="640" y="105" width="560" height="60" rx="10" fill="#1f1f1f" stroke="#333333" stroke-width="1.5"/>
+<text x="660" y="130" font-family="Helvetica, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#e5e5e5" text-anchor="start">Synthetic data — licensing, engagement,</text>
+<text x="660" y="146" font-family="Helvetica, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#e5e5e5" text-anchor="start">marketing, contracts, actor profiles</text>
+<line x1="320" y1="165" x2="320" y2="205" stroke="#5b5b5b" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="920" y1="165" x2="920" y2="205" stroke="#5b5b5b" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="40" y="191" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#E50914" text-anchor="start" letter-spacing="1px">UNITY CATALOG  ·  LAKEHOUSE STORAGE (DELTA)</text>
+<rect x="40" y="205" width="1160" height="70" rx="10" fill="#1f1f1f" stroke="#3a3a3a" stroke-width="1.5"/>
+<text x="60" y="233" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="700" fill="#e5e5e5" text-anchor="start">dataflix catalog</text>
+<text x="60" y="255" font-family="Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#8c8c8c" text-anchor="start">core · engagement · licensing · content_signals · marketing · competitive · support · ml · docs · integrations</text>
+<line x1="620" y1="275" x2="620" y2="315" stroke="#5b5b5b" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="40" y="301" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#E50914" text-anchor="start" letter-spacing="1px">AGENT TOOLS</text>
+<rect x="40" y="315" width="480" height="130" rx="10" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+<text x="60" y="339" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#8c8c8c" text-anchor="start" letter-spacing="0.5px">GENIE SPACES  (natural language → SQL)</text>
+<rect x="60.0" y="353" width="102.5" height="70" rx="8" fill="#1f1f1f" stroke="#333333" stroke-width="1.5"/>
+<text x="111.25" y="393" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="600" fill="#e5e5e5" text-anchor="middle">engagement</text>
+<rect x="172.5" y="353" width="102.5" height="70" rx="8" fill="#1f1f1f" stroke="#333333" stroke-width="1.5"/>
+<text x="223.75" y="393" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="600" fill="#e5e5e5" text-anchor="middle">licensing</text>
+<rect x="285.0" y="353" width="102.5" height="70" rx="8" fill="#1f1f1f" stroke="#333333" stroke-width="1.5"/>
+<text x="336.25" y="393" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="600" fill="#e5e5e5" text-anchor="middle">content_signals</text>
+<rect x="397.5" y="353" width="102.5" height="70" rx="8" fill="#1f1f1f" stroke="#333333" stroke-width="1.5"/>
+<text x="448.75" y="393" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="600" fill="#e5e5e5" text-anchor="middle">marketing</text>
+<rect x="560" y="315" width="640" height="130" rx="10" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+<text x="580" y="339" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#8c8c8c" text-anchor="start" letter-spacing="0.5px">UC FUNCTIONS  +  MCP  (AI Functions, external APIs)</text>
+<rect x="580.0" y="353" width="91.66666666666667" height="70" rx="8" fill="#1f1f1f" stroke="#333333" stroke-width="1.5"/>
+<text x="625.8333333333334" y="383" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#e5e5e5" text-anchor="middle">search_documents</text>
+<rect x="681.6666666666666" y="353" width="91.66666666666667" height="70" rx="8" fill="#1f1f1f" stroke="#333333" stroke-width="1.5"/>
+<text x="727.5" y="383" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#e5e5e5" text-anchor="middle">tmdb_search_titles</text>
+<rect x="783.3333333333334" y="353" width="91.66666666666667" height="70" rx="8" fill="#1f1f1f" stroke="#333333" stroke-width="1.5"/>
+<text x="829.1666666666667" y="383" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#e5e5e5" text-anchor="middle">tmdb_movie_details</text>
+<rect x="885.0" y="353" width="91.66666666666667" height="70" rx="8" fill="#1f1f1f" stroke="#333333" stroke-width="1.5"/>
+<text x="930.8333333333334" y="383" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#e5e5e5" text-anchor="middle">tmdb_trending</text>
+<rect x="986.6666666666667" y="353" width="91.66666666666667" height="70" rx="8" fill="#1f1f1f" stroke="#333333" stroke-width="1.5"/>
+<text x="1032.5" y="383" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#e5e5e5" text-anchor="middle">web_search</text>
+<rect x="1088.3333333333335" y="353" width="91.66666666666667" height="70" rx="8" fill="#1f1f1f" stroke="#333333" stroke-width="1.5"/>
+<text x="1134.1666666666667" y="383" font-family="Helvetica, Arial, sans-serif" font-size="10" font-weight="600" fill="#e5e5e5" text-anchor="middle">Trends MCP</text>
+<line x1="280" y1="445" x2="280" y2="485" stroke="#5b5b5b" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="880" y1="445" x2="880" y2="485" stroke="#5b5b5b" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="340" y="485" width="560" height="90" rx="14" fill="#1f0507" stroke="#E50914" stroke-width="2.5"/>
+<text x="620" y="521" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#e5e5e5" text-anchor="middle" letter-spacing="0.5px">SUPERVISOR AGENT</text>
+<text x="620" y="543" font-family="Helvetica, Arial, sans-serif" font-size="11.5" font-weight="400" fill="#8c8c8c" text-anchor="middle">Agent Bricks Multi-Agent Supervisor  ·  mas-de7a56a6-endpoint</text>
+<text x="620" y="561" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#5b5b5b" text-anchor="middle">routes questions across every tool above, synthesizes one answer</text>
+<line x1="620" y1="575" x2="620" y2="615" stroke="#5b5b5b" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="40" y="601" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="700" fill="#E50914" text-anchor="start" letter-spacing="1px">DATABRICKS APP  ·  NEXT.JS</text>
+<rect x="40" y="615" width="900" height="110" rx="10" fill="#1f1f1f" stroke="#3a3a3a" stroke-width="1.5"/>
+<text x="60" y="641" font-family="Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#8c8c8c" text-anchor="start">OAuth-gated app  ·  streams the agent&#x27;s response over SSE</text>
+<rect x="40.0" y="657" width="164.0" height="50" rx="8" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+<text x="122.0" y="687" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#e5e5e5" text-anchor="middle">Chat (5 personas)</text>
+<rect x="214.0" y="657" width="164.0" height="50" rx="8" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+<text x="296.0" y="687" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#e5e5e5" text-anchor="middle">Casting recommender</text>
+<rect x="388.0" y="657" width="164.0" height="50" rx="8" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+<text x="470.0" y="687" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#e5e5e5" text-anchor="middle">Contract auto-ingest</text>
+<rect x="562.0" y="657" width="164.0" height="50" rx="8" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+<text x="644.0" y="687" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#e5e5e5" text-anchor="middle">Compliance memo</text>
+<rect x="736.0" y="657" width="164.0" height="50" rx="8" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+<text x="818.0" y="687" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="600" fill="#e5e5e5" text-anchor="middle">Architecture page</text>
+<rect x="980" y="615" width="220" height="110" rx="10" fill="#1a1a1a" stroke="#333333" stroke-width="1.5"/>
+<text x="1000" y="645" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="700" fill="#e5e5e5" text-anchor="start">Lakebase</text>
+<text x="1000" y="665" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#8c8c8c" text-anchor="start">Postgres  ·  session &amp;</text>
+<text x="1000" y="681" font-family="Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#8c8c8c" text-anchor="start">chat history persistence</text>
+<path d="M 940,670 L 980,670" fill="none" stroke="#5b5b5b" stroke-width="1.8" marker-end="url(#arrow)"/>
+<line x1="490" y1="725" x2="490" y2="765" stroke="#5b5b5b" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="340" y="765" width="300" height="55" rx="27" fill="#1f1f1f" stroke="#3a3a3a" stroke-width="1.5"/>
+<text x="490" y="799" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#e5e5e5" text-anchor="middle">Browser  ·  Databricks SSO</text>
+<text x="40" y="856" font-family="Helvetica, Arial, sans-serif" font-size="10.5" font-weight="400" fill="#5b5b5b" text-anchor="start">docs/architecture/high-level.svg  ·  generated from the live build, not a simplified stand-in</text>
+</svg>
