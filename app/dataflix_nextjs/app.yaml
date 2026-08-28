@@ -1,0 +1,12 @@
+command:
+  - "sh"
+  - "-c"
+  - "npm run build && npm run start"
+
+env:
+  - name: SERVING_ENDPOINT_NAME
+    valueFrom: supervisor
+  - name: WAREHOUSE_ID
+    value: "014949aba932023b"
+  - name: LAKEBASE_ENDPOINT
+    valueFrom: postgres
