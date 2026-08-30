@@ -64,29 +64,52 @@ let schemaReady = null;
 // A brand-new schema (not the default "public", which may already be owned
 // by another role) so the app's service principal owns everything it
 // creates here -- see the databricks-lakebase skill's schema-ownership note.
+// CREATE INDEX (unlike CREATE TABLE) always requires table ownership in
+// Postgres, even with IF NOT EXISTS on an index that already exists -- so a
+// second identity sharing this schema (e.g. a second deployment's service
+// principal, granted DML access but not ownership) can't run it. That's
+// fine: the index already exists from whichever identity created the table
+// first, so treat "must be owner" (42501) here as success, not failure.
+async function runTolerantly(pool, sql) {
+  try {
+    await pool.query(sql);
+  } catch (err) {
+    if (err.code === "42501") return;
+    throw err;
+  }
+}
+
 function ensureSchema() {
   if (!schemaReady) {
-    schemaReady = getPool().query(`
-      CREATE SCHEMA IF NOT EXISTS dataflix_app;
-      CREATE TABLE IF NOT EXISTS dataflix_app.sessions (
-        id UUID PRIMARY KEY,
-        persona TEXT NOT NULL,
-        user_email TEXT,
-        created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-        last_active_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    const pool = getPool();
+    schemaReady = (async () => {
+      await pool.query(`
+        CREATE SCHEMA IF NOT EXISTS dataflix_app;
+        CREATE TABLE IF NOT EXISTS dataflix_app.sessions (
+          id UUID PRIMARY KEY,
+          persona TEXT NOT NULL,
+          user_email TEXT,
+          created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+          last_active_at TIMESTAMPTZ NOT NULL DEFAULT now()
+        );
+        CREATE TABLE IF NOT EXISTS dataflix_app.messages (
+          id BIGSERIAL PRIMARY KEY,
+          session_id UUID NOT NULL REFERENCES dataflix_app.sessions(id) ON DELETE CASCADE,
+          role TEXT NOT NULL,
+          content TEXT NOT NULL,
+          tool_calls JSONB,
+          created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+        );
+      `);
+      await runTolerantly(
+        pool,
+        `CREATE INDEX IF NOT EXISTS sessions_persona_user_idx ON dataflix_app.sessions(persona, user_email)`
       );
-      ALTER TABLE dataflix_app.sessions ADD COLUMN IF NOT EXISTS user_email TEXT;
-      CREATE INDEX IF NOT EXISTS sessions_persona_user_idx ON dataflix_app.sessions(persona, user_email);
-      CREATE TABLE IF NOT EXISTS dataflix_app.messages (
-        id BIGSERIAL PRIMARY KEY,
-        session_id UUID NOT NULL REFERENCES dataflix_app.sessions(id) ON DELETE CASCADE,
-        role TEXT NOT NULL,
-        content TEXT NOT NULL,
-        tool_calls JSONB,
-        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+      await runTolerantly(
+        pool,
+        `CREATE INDEX IF NOT EXISTS messages_session_idx ON dataflix_app.messages(session_id, created_at)`
       );
-      CREATE INDEX IF NOT EXISTS messages_session_idx ON dataflix_app.messages(session_id, created_at);
-    `).catch((err) => {
+    })().catch((err) => {
       schemaReady = null; // allow a retry on the next call rather than sticking on a failed attempt
       throw err;
     });
