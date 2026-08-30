@@ -9,6 +9,8 @@ styled like the product it's imagining.
 Every table, function, and endpoint referenced in this repo and in the docs
 below exists in the real build — nothing here is a simplified stand-in.
 
+**Live app:** [dataflix-nextjs.vercel.app](https://dataflix-nextjs.vercel.app)
+
 ---
 
 ## What it does
@@ -173,7 +175,6 @@ docs/
                           frontend/backend split, chat & casting sequences)
 app/dataflix_nextjs/    The Next.js app (Databricks App) — chat, casting,
                           contract-ingest, compliance-memo, and architecture page
-PLAN.md                 The original build plan this project was built against
 ```
 
 ## Tech stack
@@ -200,5 +201,3 @@ PLAN.md                 The original build plan this project was built against
    Agent Bricks Multi-Agent Supervisor.
 4. Deploy the app: `cd app/dataflix_nextjs && databricks apps deploy`, with
    the Supervisor Agent and a Lakebase instance wired in as app resources.
-
-See [`PLAN.md`](PLAN.md) for the full original design rationale.
